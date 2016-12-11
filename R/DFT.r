@@ -1,3 +1,4 @@
+
 #' Generic function for computing the multivariate DFT: assigns a correct weight to frequency zero (1/sqrt(2)).
 #'
 #' @param insamp Length of in-sample portion of data (by default insamp=nrow(x))
