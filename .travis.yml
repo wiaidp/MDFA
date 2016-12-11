@@ -2,8 +2,4 @@
 
 language: R
 cache: packages
-- Rscript -e 'install.packages("devtools");devtools::install_deps("MDFA")'
-install:
-  - Rscript -e 'devtools::install_deps("MDFA")'
-script:
-  - Rscript -e 'devtools::check("MDFA")'
+
