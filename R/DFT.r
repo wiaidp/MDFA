@@ -6,7 +6,6 @@
 #' @return weight_func (Multivariate) Discrete Fourier Transform
 #'
 
-
 spec_comp <- function(insamp, x, d) {
   # non-stationarity
   if(d == 1) {
