@@ -1117,6 +1117,7 @@ MS_decomp_total<-function(Gamma,trffkt,weight_func,cutoff,Lag)
 #' @return spec_mat_structure Differenced spectral matrix structure
 #'
 
+
 structure_func<-function(weight_func,spec_mat)
 {
   K<-nrow(weight_func)-1
