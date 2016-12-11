@@ -1,9 +1,3 @@
-
-
-
-# Main estimation routine
-# Sets-up the criteria as proposed in MDFA-Legacy book
-
 #' Main estimation routine: Sets-up the generic optimization criteria proposed in MDFA-Legacy project (book)
 #'
 #' @param L Filter-length
