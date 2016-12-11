@@ -1,0 +1,13 @@
+Package: MDFA
+Type: Package
+Title: Signalextraction and Forecasting Based on the Multivariate Direct Filter Approach (MDFA)
+Version: 0.1.0
+Authors@R: person("Marc","Wildi",email="marcadolfrudolf.wildi@gmail.com",role=c("aut","cre"))
+Maintainer: Who to complain to <yourfault@somewhere.net>
+Description: The MDFA package generalizes classic time series approaches to forecasting and signal extraction. It allows the user to specify research priorities by decomposing the classic mean-square criterion into Accuracy, Smoothness and Timeliness terms: ATS-Trilemma. It gives access to novel regularization features for tackling overfitting. An extension to mixed-frequency data is provided as well as formal treatment of non-stationarity (unit-roots, cointegration). 
+License: GPL-2
+LazyData: TRUE
+RoxygenNote: 5.0.1
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr
