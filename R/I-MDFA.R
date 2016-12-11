@@ -342,8 +342,8 @@ spec_mat_comp<-function(weight_func,L,Lag,c_eta,diff_explanatory,lag_mat)
 #' @param i2 Boolean. If T a second-order filter constraint in frequency zero is obtained: time-shift of real-time filter must match target (together with i1 handles integration order two)
 #' @param L Filter-length
 #' @param weight_h_exp DFT of explanatory variables
-#' @param lambda_cross Regularization: cross-sectional term
 #' @param lambda_decay Regularization: decay term
+#' @param lambda_cross Regularization: cross-sectional term
 #' @param lambda_smooth Regularization: smoothness term
 #' @param Lag Nowcast (Lag=0), Forecast (Lag<0), Backcast (Lag>0)
 #' @param weight_constraint Constraint vector in the case i1==T
@@ -445,7 +445,6 @@ mat_func<-function(i1,i2,L,weight_h_exp,lambda_decay,lambda_cross,lambda_smooth,
 #'
 #' @param L Filter-length
 #' @param weight_h_exp DFT of explanatory variables
-#' @return des_mat Design matrix
 #' @return Q_centraldev_original Transformation matrix
 #'
 
@@ -483,19 +482,15 @@ centraldev_original_func<-function(L,weight_h_exp)
 #' @param weight_h_exp DFT of explanatory variables
 #' @param L Filter-length
 #' @param c_eta Boolean: impose mild/strong smoothness customization (default is F)
-#' @param lambda_cross Regularization: cross-sectional term
 #' @param lambda_decay Regularization: decay term
-#' @param lambda_smooth Regularization: smoothness term
-#' @param grand_mean Boolean: if T then a grand-mean parametrization is imposed (default is F)
 #' @param Lag Nowcast (Lag=0), Forecast (Lag<0), Backcast (Lag>0)
+#' @param grand_mean Boolean: if T then a grand-mean parametrization is imposed (default is F)
+#' @param lambda_cross Regularization: cross-sectional term
+#' @param lambda_smooth Regularization: smoothness term
 #' @param lag_mat Matrix for implementing effective lags in a mixed-frequency setting
 #' @return Q_smooth Smoothness term (matrix)
-#' @return Q_decay Decay term (matrix)
-#' @return rever Criterion value (corresponds to a sample estimate of the MSE if lambda=eta=0)
-#' @return degrees_freedom Degrees of freedom (when imposing regularization the degrres of freedom are smaller than L times the number of explanatory series)
-#' @return Accuracy Accuracy term in decomposition of MSE
-#' @return Smoothness Smoothness term in decomposition of MSE
 #' @return Q_cross Cross-sectional term (matrix)
+#' @return Q_decay Decay term (matrix)
 #' @return lambda_decay Re-parameterized decay-weight
 #' @return lambda_smooth Re-parameterized smoothness-weight
 #' @return lambda_cross Re-parameterized cross-sectional-weight
@@ -537,9 +532,9 @@ reg_mat_func<-function(weight_h_exp,L,c_eta,lambda_decay,Lag,grand_mean,lambda_c
 #'
 #' @param L Filter-length
 #' @param weight_h_exp DFT of explanatory variables
-#' @param lambda_cross Regularization: cross-sectional term
 #' @param lambda_decay Regularization: decay term
 #' @param lambda_smooth Regularization: smoothness term
+#' @param lambda_cross Regularization: cross-sectional term
 #' @param Lag Nowcast (Lag=0), Forecast (Lag<0), Backcast (Lag>0)
 #' @param lag_mat Matrix for implementing effective lags in a mixed-frequency setting
 #' @param grand_mean Boolean: if T then a grand-mean parametrization is imposed (default is F)
@@ -806,13 +801,13 @@ w_eight_func<-function(i1,i2,Lag,weight_constraint,shift_constraint,L,weight_h_e
 
 #' This function sets-up the data-based part of the design matrix, accounting for i1/i2 constraints (this is the effective design-matrix in the absence of regularization). It is originally written in grand-mean parametrization (which makes it more tedious).  Singularities in the case i1=F, i2=T are avoided by `displacing' the constraints by a small number.
 #'
-#' @param i1 Boolean. If T a first-order filter constraint in frequency zero is obtained: amplitude of real-time filter must match weight_constraint (handles integration order one)
 #' @param i2 Boolean. If T a second-order filter constraint in frequency zero is obtained: time-shift of real-time filter must match target (together with i1 handles integration order two)
+#' @param i1 Boolean. If T a first-order filter constraint in frequency zero is obtained: amplitude of real-time filter must match weight_constraint (handles integration order one)
+#' @param L Filter-length
 #' @param weight_h_exp DFT of explanatory variables
 #' @param weight_constraint Constraint vector in the case i1==T
 #' @param shift_constraint Constraint vector in the case i2==T
-#' @param Lag Nowcast (Lag=0), Forecast (Lag<0), Backcast (Lag>0)
-#' @param des_mat Design matrix
+#' @return des_mat Data-based design matrix
 #'
 
 des_mat_func<-function(i2,i1,L,weight_h_exp,weight_constraint,shift_constraint,Lag)
@@ -1038,7 +1033,7 @@ des_mat_func<-function(i2,i1,L,weight_h_exp,weight_constraint,shift_constraint,L
 #' This function decomposes the MSE-criterion into Accuracy, Smoothness and Timeliness components
 #'
 #' @param Gamma Generic target specification: typically symmetric Lowpass (trend) or Bandpass (cycle) filters. Highpass and anticipative allpass (forecast) can be specified too
-#' @return trffkt Complex transfer function of optimal multivariate filter
+#' @param trffkt Complex transfer function of optimal multivariate filter
 #' @param weight_func DFT-matrix
 #' @param cutoff Specifies start-frequency in stopband from which Smoothness is emphasized (corresponds typically to the cutoff of the lowpass target). Is not used if eta=0.
 #' @param Lag Nowcast (Lag=0), Forecast (Lag<0), Backcast (Lag>0)
@@ -1135,7 +1130,14 @@ structure_func<-function(weight_func,spec_mat)
 
 
 
-#Not implemented yet
+#' This function allows for particular parametrizations of DFT (not implemented yet)
+#'
+#' @param weight_func DFT-matrix
+#' @param white_noise Boolean for flat spectrum
+#' @param synchronicity Boolean for synchronous explanatory variables
+#' @return weight_func Parameterized DFT
+#'
+
 white_noise_synchronicity<-function(weight_func,white_noise,synchronicity)
 {
 
