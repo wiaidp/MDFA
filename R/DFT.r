@@ -37,6 +37,14 @@ spec_comp <- function(insamp, x, d) {
 
 
 
+#' Periodogram and DFT function: can handle more general cases than function per()
+#'
+#' @param x Data
+#' @param dd Integration order (default is d=0)
+#' @param n.pg Length of time span considered for computing periodogram and DFT statistics
+#' @return perall Periodogram
+#' @return fourtrans DFT
+#'
 
 periodogram_bp <- function(x, dd, n.pg) {
   # preparations
