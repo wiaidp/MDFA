@@ -1,4 +1,4 @@
-# 1
+# 12
 #' Simple function for computing DFT and periodogram (based on univariate DFA approach): cannot handle multivariate signal extraction
 #'
 #' @param x Data (time series)
