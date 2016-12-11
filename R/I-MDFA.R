@@ -1105,6 +1105,7 @@ MS_decomp_total<-function(Gamma,trffkt,weight_func,cutoff,Lag)
 
 
 
+
 #' This function allows for additional structure in the optimization criteria (features are not implemented yet)
 #'
 #' @param weight_func DFT-matrix
