@@ -1,4 +1,4 @@
-
+# From note
 
 #' Generic function for computing the multivariate DFT: assigns a correct weight to frequency zero (1/sqrt(2)).
 #'
