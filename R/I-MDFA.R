@@ -807,6 +807,7 @@ w_eight_func<-function(i1,i2,Lag,weight_constraint,shift_constraint,L,weight_h_e
 #' @param weight_h_exp DFT of explanatory variables
 #' @param weight_constraint Constraint vector in the case i1==T
 #' @param shift_constraint Constraint vector in the case i2==T
+#' @param Lag Nowcast (Lag=0), Forecast (Lag<0), Backcast (Lag>0)
 #' @return des_mat Data-based design matrix
 #'
 
@@ -1110,7 +1111,6 @@ MS_decomp_total<-function(Gamma,trffkt,weight_func,cutoff,Lag)
 #'
 #' @param weight_func DFT-matrix
 #' @param spec_mat Spectral matrix
-#' @return Accuracy Accuracy term in decomposition of MSE
 #' @return Gamma_structure Target structure
 #' @return spec_mat_structure Spectral matrix structure
 #' @return Gamma_structure_diff Differenced target structure
