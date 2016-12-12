@@ -33,7 +33,6 @@
 #' @return freezed_degrees_new The complementary of degrees_freedom
 #'
 
-
 mdfa_analytic<-function(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_constraint,
                         lambda_cross,lambda_decay,lambda_smooth,lin_eta,shift_constraint,grand_mean,
                         b0_H0,c_eta,weight_structure,white_noise,
