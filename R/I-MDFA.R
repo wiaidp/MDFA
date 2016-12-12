@@ -31,6 +31,7 @@
 #' @return Timeliness Timeliness term in decomposition of MSE
 #' @return MS_error Sample estimate of MSE: consistent estimate in the cases lambda>0 and/or eta>0
 #' @return freezed_degrees_new The complementary of degrees_freedom
+#' @export
 #'
 
 mdfa_analytic<-function(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_constraint,

@@ -6,6 +6,7 @@
 #' @param plot_T Boolean (generate a plot of the periodogram: T/F)
 #' @return DFT Discrete Fourier Transform
 #' @return per Periodogram (squared absolute DFT)
+#' @export
 #'
 
 per<-function(x,plot_T)
@@ -57,6 +58,7 @@ per<-function(x,plot_T)
 #' @param Gamma Generic target specification: typically symmetric Lowpass (trend) or Bandpass (cycle) filters. Highpass and anticipative allpass (forecast) can be specified too.
 #' @return b optimal (MSE) filter coefficients
 #' @return trffkt Complex transfer function of optimal (univariate MSE) filter
+#' @export
 #'
 dfa_ms<-function(L,periodogram,Lag,Gamma)
 {
@@ -102,6 +104,7 @@ dfa_ms<-function(L,periodogram,Lag,Gamma)
 #' @param i2 Boolean. If T a second-order filter constraint in frequency zero is obtained: time-shift of real-time filter must match target (together with i1 handles integration order two)
 #' @return b optimal filter coefficients: MSE-design if lambda=eta=0
 #' @return trffkt Complex transfer function of optimal (univariate) filter
+#' @export
 #'
 dfa_analytic<-function(L,lambda,periodogram,Lag,Gamma,eta,cutoff,i1,i2)
 {
