@@ -4,8 +4,8 @@
 #' @param x (Multivariate) Data: first column is the target series, the remaining columns are the explanatory series.
 #' @param d For d=1 a pseudo-DFT is implemented (default is d=0)
 #' @return weight_func (Multivariate) Discrete Fourier Transform
+#' @export
 #'
-
 
 spec_comp <- function(insamp, x, d) {
   # non-stationarity
