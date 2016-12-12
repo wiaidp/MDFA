@@ -91,6 +91,7 @@ dfa_ms<-function(L,periodogram,Lag,Gamma)
 
 
 
+
 #' This function computes MSE (mean-square) DFA-solutions as well as customized filters: it replicates the function dfa_ms if lambda=eta=0 and if i1=i2=F. It can solve univariate signal extraction problems only. It can handle constraints. Regularization is not possible.
 #'
 #' @param L Filter length
