@@ -215,7 +215,7 @@ mdfa_analytic<-function(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_c
   # MDFA-Legacy : new normalization for all error terms below
   rever<-sum(abs(Gamma*weight_target-Re(trt)-1.i*sqrt(1+lambda*Gamma)*Im(trt))^2)*pi/(K+1)
   # MS-filter error : DFA-criterion without effects by lambda or eta (one must divide spectrum by eta_vec)
-  MS_error<-sum((abs(Gamma*weight_target-trt)/eta_vec)^2)*2*pi/(K+1)
+  MS_error<-sum((abs(Gamma*weight_target-trt)/eta_vec)^2)*pi/(K+1)
   # Definition of Accuracy, time-shift and noise suppression terms
   Gamma_cp<-Gamma[1+0:as.integer(K*(cutoff/pi))]
   Gamma_cn<-Gamma[(2+as.integer(K*(cutoff/pi))):(K+1)]
