@@ -43,6 +43,103 @@ MDFA_MSE<-function(L,weight_func,Lag,Gamma,cutoff,i1,i2)
 
 
 
+#' Simplified call for multivariate customization: no regularization
+#'
+#' @param L Filter-length
+#' @param weight_func DFT-matrix
+#' @param Lag Nowcast (Lag=0), Forecast (Lag<0), Backcast (Lag>0)
+#' @param Gamma Generic target specification: typically symmetric Lowpass (trend) or Bandpass (cycle) filters. Highpass and anticipative allpass (forecast) can be specified too
+#' @param cutoff Specifies start-frequency in stopband from which Smoothness is emphasized (corresponds typically to the cutoff of the lowpass target). Is not used if eta=0.
+#' @param i1 Boolean. If T a first-order filter constraint in frequency zero is obtained: amplitude of real-time filter must match weight_constraint (handles integration order one)
+#' @param i2 Boolean. If T a second-order filter constraint in frequency zero is obtained: time-shift of real-time filter must match target (together with i1 handles integration order two)
+#' @param lambda Customization parameter: Timeliness is emphasized in the ATS-trilemma if lambda>0
+#' @param eta Customization parameter: Smoothness is emphasized in the ATS-trilemma if eta>0
+#' @return mdfa_obj MDFA object
+#' @export
+#'
+
+MDFA_cust<-function(L,weight_func,Lag,Gamma,cutoff,i1,i2,lambda,eta)
+{
+
+  lin_eta<-F
+  weight_constraint<-rep(1/(ncol(weight_func)-1),ncol(weight_func)-1)
+  lambda_cross<-lambda_smooth<-0
+  lambda_decay<-c(0,0)
+  lin_expweight<-F
+  shift_constraint<-rep(0,ncol(weight_func)-1)
+  grand_mean<-F
+  b0_H0<-NULL
+  c_eta<-F
+  weights_only<-F
+  weight_structure<-c(0,0)
+  white_noise<-F
+  synchronicity<-F
+  lag_mat<-matrix(Lag+rep(0:(L-1),ncol(weight_func)-1),nrow=L)
+  troikaner<-F
+
+  mdfa_obj<-mdfa_analytic(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_constraint,
+                          lambda_cross,lambda_decay,lambda_smooth,lin_eta,shift_constraint,grand_mean,
+                          b0_H0,c_eta,weight_structure,white_noise,
+                          synchronicity,lag_mat,troikaner)
+
+  return(list(mdfa_obj=mdfa_obj))
+}
+
+
+
+
+
+
+
+
+#' Simplified call for multivariate MSE/customization with regularization
+#'
+#' @param L Filter-length
+#' @param weight_func DFT-matrix
+#' @param Lag Nowcast (Lag=0), Forecast (Lag<0), Backcast (Lag>0)
+#' @param Gamma Generic target specification: typically symmetric Lowpass (trend) or Bandpass (cycle) filters. Highpass and anticipative allpass (forecast) can be specified too
+#' @param cutoff Specifies start-frequency in stopband from which Smoothness is emphasized (corresponds typically to the cutoff of the lowpass target). Is not used if eta=0.
+#' @param i1 Boolean. If T a first-order filter constraint in frequency zero is obtained: amplitude of real-time filter must match weight_constraint (handles integration order one)
+#' @param i2 Boolean. If T a second-order filter constraint in frequency zero is obtained: time-shift of real-time filter must match target (together with i1 handles integration order two)
+#' @param lambda Customization parameter: Timeliness is emphasized in the ATS-trilemma if lambda>0
+#' @param eta Customization parameter: Smoothness is emphasized in the ATS-trilemma if eta>0
+#' @param lambda_cross Regularization: cross-sectional term
+#' @param lambda_decay Regularization: decay term
+#' @param lambda_smooth Regularization: smoothness term
+#' @return mdfa_obj MDFA object
+#' @export
+#'
+
+MDFA_reg<-function(L,weight_func,Lag,Gamma,cutoff,i1,i2,lambda,eta,lambda_cross,lambda_decay,lambda_smooth)
+{
+
+  lin_eta<-F
+  weight_constraint<-rep(1/(ncol(weight_func)-1),ncol(weight_func)-1)
+  lin_expweight<-F
+  shift_constraint<-rep(0,ncol(weight_func)-1)
+  grand_mean<-F
+  b0_H0<-NULL
+  c_eta<-F
+  weights_only<-F
+  weight_structure<-c(0,0)
+  white_noise<-F
+  synchronicity<-F
+  lag_mat<-matrix(Lag+rep(0:(L-1),ncol(weight_func)-1),nrow=L)
+  troikaner<-F
+
+  mdfa_obj<-mdfa_analytic(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_constraint,
+                          lambda_cross,lambda_decay,lambda_smooth,lin_eta,shift_constraint,grand_mean,
+                          b0_H0,c_eta,weight_structure,white_noise,
+                          synchronicity,lag_mat,troikaner)
+
+  return(list(mdfa_obj=mdfa_obj))
+}
+
+
+
+
+
+
 #' Main estimation routine: Sets-up the generic optimization criteria proposed in MDFA-Legacy project (book)
 #'
 #' @param L Filter-length
