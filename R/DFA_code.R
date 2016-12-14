@@ -20,6 +20,9 @@ per<-function(x,plot_T)
     cexp <- exp(-1.i*(1:len)*2*pi*k/len)
     DFT[k+1]<-sum(cexp*x*sqrt(1/(2*pi*len)))
   }
+# Frequency zero receives weight 1/sqrt(2)
+#   The periodogram in frequency zero appears once only whereas all other frequencies are doubled
+  DFT[1]<-DFT[1]/sqrt(2)
 # Weighths wk: if length of data sample is even then DFT in frequency pi is scaled by 1/sqrt(2) (Periodogram in pi is weighted by 1/2)
   if (abs(as.integer(len/2)-len/2)<0.1)
     DFT[k+1]<-DFT[k+1]/sqrt(2)
