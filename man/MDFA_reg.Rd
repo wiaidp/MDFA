@@ -10,7 +10,7 @@ MDFA_reg(L, weight_func, Lag, Gamma, cutoff, i1, i2, lambda, eta, lambda_cross,
 \arguments{
 \item{L}{Filter-length}
 
-\item{weight_func}{DFT-matrix}
+\item{weight_func}{DFT-matrix or alternative (for example model-based) estimate: first column is the target variable, additional columns are explanatory variables}
 
 \item{Lag}{Nowcast (Lag=0), Forecast (Lag<0), Backcast (Lag>0)}
 

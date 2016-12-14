@@ -1,7 +1,7 @@
 #' Simplified call for multivariate MSE estimation: no regularization, no customization
 #'
 #' @param L Filter-length
-#' @param weight_func DFT-matrix
+#' @param weight_func Spectrum: DFT-matrix or alternative (for example model-based) estimate: first column is the target variable, additional columns are explanatory variables
 #' @param Lag Nowcast (Lag=0), Forecast (Lag<0), Backcast (Lag>0)
 #' @param Gamma Generic target specification: typically symmetric Lowpass (trend) or Bandpass (cycle) filters. Highpass and anticipative allpass (forecast) can be specified too
 #' @param cutoff Specifies start-frequency in stopband from which Smoothness is emphasized (corresponds typically to the cutoff of the lowpass target). Is not used if eta=0.
@@ -46,7 +46,7 @@ MDFA_MSE<-function(L,weight_func,Lag,Gamma,cutoff,i1,i2)
 #' Simplified call for multivariate customization: no regularization
 #'
 #' @param L Filter-length
-#' @param weight_func DFT-matrix
+#' @param weight_func DFT-matrix or alternative (for example model-based) estimate: first column is the target variable, additional columns are explanatory variables
 #' @param Lag Nowcast (Lag=0), Forecast (Lag<0), Backcast (Lag>0)
 #' @param Gamma Generic target specification: typically symmetric Lowpass (trend) or Bandpass (cycle) filters. Highpass and anticipative allpass (forecast) can be specified too
 #' @param cutoff Specifies start-frequency in stopband from which Smoothness is emphasized (corresponds typically to the cutoff of the lowpass target). Is not used if eta=0.
@@ -95,7 +95,7 @@ MDFA_cust<-function(L,weight_func,Lag,Gamma,cutoff,i1,i2,lambda,eta)
 #' Simplified call for multivariate MSE/customization with regularization
 #'
 #' @param L Filter-length
-#' @param weight_func DFT-matrix
+#' @param weight_func DFT-matrix or alternative (for example model-based) estimate: first column is the target variable, additional columns are explanatory variables
 #' @param Lag Nowcast (Lag=0), Forecast (Lag<0), Backcast (Lag>0)
 #' @param Gamma Generic target specification: typically symmetric Lowpass (trend) or Bandpass (cycle) filters. Highpass and anticipative allpass (forecast) can be specified too
 #' @param cutoff Specifies start-frequency in stopband from which Smoothness is emphasized (corresponds typically to the cutoff of the lowpass target). Is not used if eta=0.
@@ -144,7 +144,7 @@ MDFA_reg<-function(L,weight_func,Lag,Gamma,cutoff,i1,i2,lambda,eta,lambda_cross,
 #'
 #' @param L Filter-length
 #' @param lambda Customization parameter: Timeliness is emphasized in the ATS-trilemma if lambda>0
-#' @param weight_func DFT-matrix
+#' @param weight_func DFT-matrix or alternative (for example model-based) estimate: first column is the target variable, additional columns are explanatory variables
 #' @param Lag Nowcast (Lag=0), Forecast (Lag<0), Backcast (Lag>0)
 #' @param Gamma Generic target specification: typically symmetric Lowpass (trend) or Bandpass (cycle) filters. Highpass and anticipative allpass (forecast) can be specified too
 #' @param eta Customization parameter: Smoothness is emphasized in the ATS-trilemma if eta>0
@@ -418,7 +418,7 @@ mdfa_analytic<-function(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_c
 
 #' This function sets-up the spectral matrix for closed-form solution of the optimization problem in the multivariate case: it relies on the multivariate DFT; it organizes lead/lags in the case of mixed-frequency data.
 #'
-#' @param weight_func DFT-matrix (first column is the traget variable, additional columns are explanatory variables)
+#' @param weight_func DFT-matrix or alternative (for example model-based) estimate: first column is the target variable, additional columns are explanatory variables
 #' @param L Filter-length
 #' @param Lag Nowcast (Lag=0), Forecast (Lag<0), Backcast (Lag>0)
 #' @param c_eta Boolean weight of frequency zero (default is F)

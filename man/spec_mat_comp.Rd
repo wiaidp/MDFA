@@ -7,7 +7,7 @@
 spec_mat_comp(weight_func, L, Lag, c_eta, lag_mat)
 }
 \arguments{
-\item{weight_func}{DFT-matrix (first column is the traget variable, additional columns are explanatory variables)}
+\item{weight_func}{DFT-matrix or alternative (for example model-based) estimate: first column is the target variable, additional columns are explanatory variables}
 
 \item{L}{Filter-length}
 

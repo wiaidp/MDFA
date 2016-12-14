@@ -14,7 +14,7 @@ mdfa_analytic(L, lambda, weight_func, Lag, Gamma, eta, cutoff, i1, i2,
 
 \item{lambda}{Customization parameter: Timeliness is emphasized in the ATS-trilemma if lambda>0}
 
-\item{weight_func}{DFT-matrix}
+\item{weight_func}{DFT-matrix or alternative (for example model-based) estimate: first column is the target variable, additional columns are explanatory variables}
 
 \item{Lag}{Nowcast (Lag=0), Forecast (Lag<0), Backcast (Lag>0)}
 
