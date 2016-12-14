@@ -4,7 +4,7 @@
 \alias{spec_mat_comp}
 \title{This function sets-up the spectral matrix for closed-form solution of the optimization problem in the multivariate case: it relies on the multivariate DFT; it organizes lead/lags in the case of mixed-frequency data.}
 \usage{
-spec_mat_comp(weight_func, L, Lag, c_eta, diff_explanatory, lag_mat)
+spec_mat_comp(weight_func, L, Lag, c_eta, lag_mat)
 }
 \arguments{
 \item{weight_func}{DFT-matrix (first column is the traget variable, additional columns are explanatory variables)}
@@ -14,8 +14,6 @@ spec_mat_comp(weight_func, L, Lag, c_eta, diff_explanatory, lag_mat)
 \item{Lag}{Nowcast (Lag=0), Forecast (Lag<0), Backcast (Lag>0)}
 
 \item{c_eta}{Boolean weight of frequency zero (default is F)}
-
-\item{diff_explanatory}{Weight of frequency zero (default is F)}
 
 \item{lag_mat}{Matrix for implementing effective lags in a mixed-frequency setting}
 }

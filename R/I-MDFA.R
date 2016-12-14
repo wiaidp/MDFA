@@ -1,3 +1,49 @@
+#' Simplified call for multivariate MSE estimation: no regularization, no customization
+#'
+#' @param L Filter-length
+#' @param weight_func DFT-matrix
+#' @param Lag Nowcast (Lag=0), Forecast (Lag<0), Backcast (Lag>0)
+#' @param Gamma Generic target specification: typically symmetric Lowpass (trend) or Bandpass (cycle) filters. Highpass and anticipative allpass (forecast) can be specified too
+#' @param cutoff Specifies start-frequency in stopband from which Smoothness is emphasized (corresponds typically to the cutoff of the lowpass target). Is not used if eta=0.
+#' @param i1 Boolean. If T a first-order filter constraint in frequency zero is obtained: amplitude of real-time filter must match weight_constraint (handles integration order one)
+#' @param i2 Boolean. If T a second-order filter constraint in frequency zero is obtained: time-shift of real-time filter must match target (together with i1 handles integration order two)
+#' @return mdfa_obj MDFA object
+#' @export
+#'
+
+
+MDFA_MSE<-function(L,weight_func,Lag,Gamma,cutoff,i1,i2)
+{
+
+  lin_eta<-F
+  lambda<-0
+  eta<-0
+  weight_constraint<-rep(1/(ncol(weight_func)-1),ncol(weight_func)-1)
+  lambda_cross<-lambda_smooth<-0
+  lambda_decay<-c(0,0)
+  lin_expweight<-F
+  shift_constraint<-rep(0,ncol(weight_func)-1)
+  grand_mean<-F
+  b0_H0<-NULL
+  c_eta<-F
+  weights_only<-F
+  weight_structure<-c(0,0)
+  white_noise<-F
+  synchronicity<-F
+  lag_mat<-matrix(Lag+rep(0:(L-1),ncol(weight_func)-1),nrow=L)
+  troikaner<-F
+
+  mdfa_obj<-mdfa_analytic(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_constraint,
+                          lambda_cross,lambda_decay,lambda_smooth,lin_eta,shift_constraint,grand_mean,
+                          b0_H0,c_eta,weight_structure,white_noise,
+                          synchronicity,lag_mat,troikaner)
+
+  return(list(mdfa_obj=mdfa_obj))
+}
+
+
+
+
 #' Main estimation routine: Sets-up the generic optimization criteria proposed in MDFA-Legacy project (book)
 #'
 #' @param L Filter-length
@@ -63,12 +109,9 @@ mdfa_analytic<-function(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_c
   }
   if (!(length(b0_H0)==L*(dim(weight_func)[2]-1))&length(b0_H0)>0)
     print(paste("length of b0_H0 vector is ",length(b0_H0),": it should be ",L*(dim(weight_func)[2]-1)," instead",sep=""))
-  # diff_explanatory<-F implies that DFT is computed as usual
-  diff_explanatory<-F
-  # The function spect_mat_comp rotates all DFTs such that first column is real!#Lag<-0
+# The function spect_mat_comp rotates all DFTs such that first column is real!#Lag<-0
 
-
-  spec_mat<-spec_mat_comp(weight_func,L,Lag,c_eta,diff_explanatory,lag_mat)$spec_mat     #dim(spec_mat[,1])
+  spec_mat<-spec_mat_comp(weight_func,L,Lag,c_eta,lag_mat)$spec_mat
   #spec_mat[,2]  spec_math-spec_mat
   structure_func_obj<-structure_func(weight_func,spec_mat)
 
@@ -283,11 +326,10 @@ mdfa_analytic<-function(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_c
 #' @param L Filter-length
 #' @param Lag Nowcast (Lag=0), Forecast (Lag<0), Backcast (Lag>0)
 #' @param c_eta Boolean weight of frequency zero (default is F)
-#' @param diff_explanatory Weight of frequency zero (default is F)
 #' @param lag_mat Matrix for implementing effective lags in a mixed-frequency setting
 #' @return spec_mat Spectral matrix set-up for closed-form solution of optimization problem
 #'
-spec_mat_comp<-function(weight_func,L,Lag,c_eta,diff_explanatory,lag_mat)
+spec_mat_comp<-function(weight_func,L,Lag,c_eta,lag_mat)
 {
   K<-length(weight_func[,1])-1
   weight_h<-weight_func
@@ -303,31 +345,16 @@ spec_mat_comp<-function(weight_func,L,Lag,c_eta,diff_explanatory,lag_mat)
   weight_target<-weight_target*exp(-1.i*Arg(weight_target))
   # DFT's explaining variables (target variable can be an explaining variable too)
   weight_h_exp<-as.matrix(weight_h[,2:(dim(weight_h)[2])])
-# If diff_explanatory==T then we consider difference of filter output or, equivalently, difference of explanatory data (but not of target!); diff-operator in frequency zero vanishes; otherwise exp(1.i*0)=1
-  freq_zero<-ifelse(diff_explanatory,0,1)
-  spec_mat<-as.vector(t(as.matrix(weight_h_exp[1,])%*%t(as.matrix(rep(freq_zero,L)))))
+  spec_mat<-as.vector(t(as.matrix(weight_h_exp[1,])%*%t(as.matrix(rep(1,L)))))
 
   for (j in 1:(K))#j<-1  h<-2  lag_mat<-matrix(rep(0:1,3),ncol=3)   Lag<-2
   {
     omegak<-j*pi/K
-    exp_vec<-exp(1.i*omegak*((0:(L-1))-Lag))
-# 26.11
-#    exp_vec<-exp(1.i*omegak*((0:(L-1))))
-    # We feed the daily structure of the mixed_frequency data lag_mat<-matrix(rep(0:2,3),ncol=3)
+# We feed the daily structure of the mixed_frequency data lag_mat
     exp_mat<-matrix(nrow=L,ncol=ncol(weight_h_exp))
     for (h in 1:ncol(exp_mat))
       exp_mat[,h]<-exp(1.i*omegak*(lag_mat[,h]-Lag))
-# 26.11
-#    for (h in 1:ncol(exp_mat))
-#      exp_mat[,h]<-exp(1.i*omegak*(lag_mat[,h]))
-    if (diff_explanatory)
-    {
-# If diff_explanatory==T then we consider differences of data (in contrast to the time domain we do not loose a data point when considering differences in the the frequency domain)
-      exp_vec<-exp_vec*(1-exp(1.i*omegak))
-    }
-#    spec_mat<-cbind(spec_mat,as.vector(t(as.matrix(weight_h_exp[j+1,])%*%t(as.matrix(exp_vec)))))
-#
-# The new computation allows inclusion of the time-varying lag-structure of the mixed-frequency data
+# Inclusion of the time-varying lag-structure of the mixed-frequency data
     spec_mat<-cbind(spec_mat,as.vector(t(weight_h_exp[j+1,]*t(exp_mat))))
   }
   dim(spec_mat)
