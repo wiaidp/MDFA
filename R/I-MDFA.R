@@ -11,7 +11,6 @@
 #' @export
 #'
 
-
 MDFA_MSE<-function(L,weight_func,Lag,Gamma,cutoff,i1,i2)
 {
 
