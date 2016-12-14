@@ -22,6 +22,7 @@
 #' @param white_noise Impose a flat DFT (phase information is maintained)
 #' @param synchronicity Impose a zero shift across series (amplitude information is maintained)
 #' @param lag_mat Matrix for implementing effective lags in a mixed-frequency setting
+#' @param troikaner Boolean: if T then degrees oif freedom will be computed (time-consuming computations if K is large)
 #' @return b Matrix of optimal filter coefficients
 #' @return trffkt Complex transfer function of optimal multivariate filter
 #' @return rever Criterion value (corresponds to a sample estimate of the MSE if lambda=eta=0)
@@ -37,7 +38,7 @@
 mdfa_analytic<-function(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_constraint,
                         lambda_cross,lambda_decay,lambda_smooth,lin_eta,shift_constraint,grand_mean,
                         b0_H0,c_eta,weight_structure,white_noise,
-                        synchronicity,lag_mat)
+                        synchronicity,lag_mat,troikaner)
 {
 
 # Enforce meaningful parameter values
@@ -207,33 +208,6 @@ mdfa_analytic<-function(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_c
       trffkt[k+1,j]<-(b[,j]%*%exp(1.i*k*(0:(L-1))*pi/(K)))
     }
   }
-  #ts.plot(abs(trffkt))
-
-
-  # The following derivations of the DFA-criterion are equivalent
-  # They are identical with rever (up to normalization by (2*(K+1)^2))
-  trth<-((X_new)%*%(X_inv%*%t(Re(X_new))))%*%(weight_target*Gamma)
-  # The projection matrix
-  Proj_mat<-((X_new)%*%(X_inv%*%t(Re(X_new))))
-  # The residual projection matrix
-  res_mat<-diag(rep(1,dim(Proj_mat)[1]))-Proj_mat
-  # DFA criterion: first possibility (all three variants are identical)
-  sum(abs(res_mat%*%(weight_target*Gamma))^2)*pi/(K+1)
-  # Residuals (DFT of filter error)
-  resi<-res_mat%*%(weight_target*Gamma)
-  # DFA criterion: second possibility
-  t(Conj(resi))%*%resi*pi/(K+1)
-  t((weight_target*Gamma))%*%(t(Conj(res_mat))%*%(res_mat))%*%(weight_target*Gamma)*pi/(K+1)
-  degrees_freedom<-2*Re(sum(diag(t(Conj(res_mat))%*%(res_mat))))
-  #  Re(t(Conj(res_mat))%*%(res_mat))-Re(res_mat)
-  freezed_degrees<-2*K+1-degrees_freedom
-  # The following expression equates to zero i.e. projection matrix is a projection for real part
-  #   Re(t(Conj(res_mat))%*%(res_mat))-Re(res_mat)
-
-  M<-((X_new)%*%(X_inv%*%t(Conj(X_new))))
-  res_M<-diag(rep(1,dim(M)[1]))-M
-  # The following is a real number but due to numerical rounding errors we prefer to take the real part of the result
-  freezed_degrees_new<-Re(K+1-sum(eigen(res_M)$values))
 
 
   trt<-apply(((trffkt)*exp(1.i*(0-Lag)*pi*(0:(K))/K))*weight_h_exp,1,sum)
@@ -254,11 +228,45 @@ mdfa_analytic<-function(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_c
   Timeliness<-4*sum(abs(Gamma_cp)*abs(trt_cp)*sin(Arg(trt_cp)/2)^2*weight_target_cp)*2*pi/(K+1)
   Smoothness<-sum(abs(Gamma_cn*weight_target_cn-abs(trt_cn))^2)*2*pi/(K+1)
   Shift_stopband<-4*sum(abs(Gamma_cn)*abs(trt_cn)*sin(Arg(trt_cn)/2)^2*weight_target_cn)*2*pi/(K+1)
-  # Troikaner
-  aic<-ifelse(degrees_freedom<K+1&degrees_freedom>1,log(rever)+2*(K-degrees_freedom+1)/(degrees_freedom-2),NA)
 
-  return(list(b=b,trffkt=trffkt,rever=rever,degrees_freedom=degrees_freedom,aic=aic,freezed_degrees=freezed_degrees,Accuracy=Accuracy,Smoothness=Smoothness,Timeliness=Timeliness,MS_error=MS_error,freezed_degrees_new=freezed_degrees_new))
+# The following computations are time-consuming if K is `large'
+# By default they are skipped i.e. troikaner=F
+# Additional output: degrees of freedom, AIC
+  if (troikaner)
+  {
+    # The following derivations of the DFA-criterion are equivalent
+    # They are identical with rever (up to normalization by (2*(K+1)^2))
+    trth<-((X_new)%*%(X_inv%*%t(Re(X_new))))%*%(weight_target*Gamma)
+    # The projection matrix
+    Proj_mat<-((X_new)%*%(X_inv%*%t(Re(X_new))))
+    # The residual projection matrix
+    res_mat<-diag(rep(1,dim(Proj_mat)[1]))-Proj_mat
+    # DFA criterion: first possibility (all three variants are identical)
+    sum(abs(res_mat%*%(weight_target*Gamma))^2)*pi/(K+1)
+    # Residuals (DFT of filter error)
+    resi<-res_mat%*%(weight_target*Gamma)
+    # DFA criterion: second possibility
+    t(Conj(resi))%*%resi*pi/(K+1)
+    t((weight_target*Gamma))%*%(t(Conj(res_mat))%*%(res_mat))%*%(weight_target*Gamma)*pi/(K+1)
+    degrees_freedom<-2*Re(sum(diag(t(Conj(res_mat))%*%(res_mat))))
+    #  Re(t(Conj(res_mat))%*%(res_mat))-Re(res_mat)
+    freezed_degrees<-2*K+1-degrees_freedom
+    # The following expression equates to zero i.e. projection matrix is a projection for real part
+    #   Re(t(Conj(res_mat))%*%(res_mat))-Re(res_mat)
 
+    M<-((X_new)%*%(X_inv%*%t(Conj(X_new))))
+    res_M<-diag(rep(1,dim(M)[1]))-M
+    # The following is a real number but due to numerical rounding errors we prefer to take the real part of the result
+    freezed_degrees_new<-Re(K+1-sum(eigen(res_M)$values))
+    # Troikaner
+    aic<-ifelse(degrees_freedom<K+1&degrees_freedom>1,log(rever)+2*(K-degrees_freedom+1)/(degrees_freedom-2),NA)
+
+    return(list(b=b,trffkt=trffkt,rever=rever,degrees_freedom=degrees_freedom,aic=aic,freezed_degrees=freezed_degrees,Accuracy=Accuracy,Smoothness=Smoothness,Timeliness=Timeliness,MS_error=MS_error,freezed_degrees_new=freezed_degrees_new))
+  } else
+  {
+# Simplified (shorter) return
+    return(list(b=b,trffkt=trffkt,rever=rever,Accuracy=Accuracy,Smoothness=Smoothness,Timeliness=Timeliness,MS_error=MS_error))
+  }
 }
 
 

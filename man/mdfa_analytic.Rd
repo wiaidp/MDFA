@@ -7,7 +7,7 @@
 mdfa_analytic(L, lambda, weight_func, Lag, Gamma, eta, cutoff, i1, i2,
   weight_constraint, lambda_cross, lambda_decay, lambda_smooth, lin_eta,
   shift_constraint, grand_mean, b0_H0, c_eta, weight_structure, white_noise,
-  synchronicity, lag_mat)
+  synchronicity, lag_mat, troikaner)
 }
 \arguments{
 \item{L}{Filter-length}
@@ -53,6 +53,8 @@ mdfa_analytic(L, lambda, weight_func, Lag, Gamma, eta, cutoff, i1, i2,
 \item{synchronicity}{Impose a zero shift across series (amplitude information is maintained)}
 
 \item{lag_mat}{Matrix for implementing effective lags in a mixed-frequency setting}
+
+\item{troikaner}{Boolean: if T then degrees oif freedom will be computed (time-consuming computations if K is large)}
 }
 \value{
 b Matrix of optimal filter coefficients
