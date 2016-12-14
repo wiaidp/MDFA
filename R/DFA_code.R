@@ -9,6 +9,7 @@
 #' @export
 #' @import graphics
 
+
 per<-function(x,plot_T)
 {
   len<-length(x)
