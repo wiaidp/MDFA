@@ -7,8 +7,7 @@
 #' @return DFT Discrete Fourier Transform
 #' @return per Periodogram (squared absolute DFT)
 #' @export
-#' @importFrom("graphics","axis","box","par","plot")
-#'
+#' @importFrom graphics plot axis box par
 
 per<-function(x,plot_T)
 {
