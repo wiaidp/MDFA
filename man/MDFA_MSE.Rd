@@ -2,9 +2,9 @@
 % Please edit documentation in R/I-MDFA.R
 \name{MDFA_mse}
 \alias{MDFA_mse}
-\title{Simplified call for multivariate MSE estimation: no regularization, no customization}
+\title{Simplified call for multivariate MSE estimation: no constraints, no regularization, no customization}
 \usage{
-MDFA_mse(L, weight_func, Lag, Gamma, cutoff, i1, i2)
+MDFA_mse(L, weight_func, Lag, Gamma, cutoff)
 }
 \arguments{
 \item{L}{Filter-length}
@@ -16,15 +16,11 @@ MDFA_mse(L, weight_func, Lag, Gamma, cutoff, i1, i2)
 \item{Gamma}{Generic target specification: typically symmetric Lowpass (trend) or Bandpass (cycle) filters. Highpass and anticipative allpass (forecast) can be specified too}
 
 \item{cutoff}{Specifies start-frequency in stopband from which Smoothness is emphasized (corresponds typically to the cutoff of the lowpass target). Is not used if eta=0.}
-
-\item{i1}{Boolean. If T a first-order filter constraint in frequency zero is obtained: amplitude of real-time filter must match weight_constraint (handles integration order one)}
-
-\item{i2}{Boolean. If T a second-order filter constraint in frequency zero is obtained: time-shift of real-time filter must match target (together with i1 handles integration order two)}
 }
 \value{
 mdfa_obj MDFA object
 }
 \description{
-Simplified call for multivariate MSE estimation: no regularization, no customization
+Simplified call for multivariate MSE estimation: no constraints, no regularization, no customization
 }
 

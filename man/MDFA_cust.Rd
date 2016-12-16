@@ -2,9 +2,9 @@
 % Please edit documentation in R/I-MDFA.R
 \name{MDFA_cust}
 \alias{MDFA_cust}
-\title{Simplified call for multivariate customization: no regularization}
+\title{Simplified call for multivariate customization: no regularization, no constraints}
 \usage{
-MDFA_cust(L, weight_func, Lag, Gamma, cutoff, i1, i2, lambda, eta)
+MDFA_cust(L, weight_func, Lag, Gamma, cutoff, lambda, eta)
 }
 \arguments{
 \item{L}{Filter-length}
@@ -17,10 +17,6 @@ MDFA_cust(L, weight_func, Lag, Gamma, cutoff, i1, i2, lambda, eta)
 
 \item{cutoff}{Specifies start-frequency in stopband from which Smoothness is emphasized (corresponds typically to the cutoff of the lowpass target). Is not used if eta=0.}
 
-\item{i1}{Boolean. If T a first-order filter constraint in frequency zero is obtained: amplitude of real-time filter must match weight_constraint (handles integration order one)}
-
-\item{i2}{Boolean. If T a second-order filter constraint in frequency zero is obtained: time-shift of real-time filter must match target (together with i1 handles integration order two)}
-
 \item{lambda}{Customization parameter: Timeliness is emphasized in the ATS-trilemma if lambda>0}
 
 \item{eta}{Customization parameter: Smoothness is emphasized in the ATS-trilemma if eta>0}
@@ -29,6 +25,6 @@ MDFA_cust(L, weight_func, Lag, Gamma, cutoff, i1, i2, lambda, eta)
 mdfa_obj MDFA object
 }
 \description{
-Simplified call for multivariate customization: no regularization
+Simplified call for multivariate customization: no regularization, no constraints
 }
 
