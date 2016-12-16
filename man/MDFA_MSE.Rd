@@ -4,7 +4,7 @@
 \alias{MDFA_mse}
 \title{Simplified call for multivariate MSE estimation: no constraints, no regularization, no customization}
 \usage{
-MDFA_mse(L, weight_func, Lag, Gamma, cutoff)
+MDFA_mse(L, weight_func, Lag, Gamma)
 }
 \arguments{
 \item{L}{Filter-length}
@@ -14,8 +14,6 @@ MDFA_mse(L, weight_func, Lag, Gamma, cutoff)
 \item{Lag}{Nowcast (Lag=0), Forecast (Lag<0), Backcast (Lag>0)}
 
 \item{Gamma}{Generic target specification: typically symmetric Lowpass (trend) or Bandpass (cycle) filters. Highpass and anticipative allpass (forecast) can be specified too}
-
-\item{cutoff}{Specifies start-frequency in stopband from which Smoothness is emphasized (corresponds typically to the cutoff of the lowpass target). Is not used if eta=0.}
 }
 \value{
 mdfa_obj MDFA object

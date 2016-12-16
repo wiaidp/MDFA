@@ -4,14 +4,14 @@
 #' @param weight_func Spectrum: DFT-matrix or alternative (for example model-based) estimate: first column is the target variable, additional columns are explanatory variables
 #' @param Lag Nowcast (Lag=0), Forecast (Lag<0), Backcast (Lag>0)
 #' @param Gamma Generic target specification: typically symmetric Lowpass (trend) or Bandpass (cycle) filters. Highpass and anticipative allpass (forecast) can be specified too
-#' @param cutoff Specifies start-frequency in stopband from which Smoothness is emphasized (corresponds typically to the cutoff of the lowpass target). Is not used if eta=0.
 #' @return mdfa_obj MDFA object
 #' @export
 #'
 
-MDFA_mse<-function(L,weight_func,Lag,Gamma,cutoff)
+MDFA_mse<-function(L,weight_func,Lag,Gamma)
 {
 
+  cutoff<-pi
   lin_eta<-F
   lambda<-0
   eta<-0
@@ -49,7 +49,6 @@ MDFA_mse<-function(L,weight_func,Lag,Gamma,cutoff)
 #' @param weight_func Spectrum: DFT-matrix or alternative (for example model-based) estimate: first column is the target variable, additional columns are explanatory variables
 #' @param Lag Nowcast (Lag=0), Forecast (Lag<0), Backcast (Lag>0)
 #' @param Gamma Generic target specification: typically symmetric Lowpass (trend) or Bandpass (cycle) filters. Highpass and anticipative allpass (forecast) can be specified too
-#' @param cutoff Specifies start-frequency in stopband from which Smoothness is emphasized (corresponds typically to the cutoff of the lowpass target). Is not used if eta=0.
 #' @param i1 Boolean. If T a first-order filter constraint in frequency zero is obtained: amplitude of real-time filter must match weight_constraint (handles integration order one)
 #' @param i2 Boolean. If T a second-order filter constraint in frequency zero is obtained: time-shift of real-time filter must match target (together with i1 handles integration order two)
 #' @param weight_constraint Vector of amplitude constraints in frequency zero (typically 1 for lowpass and zero for bandpass or highpass)
@@ -58,9 +57,10 @@ MDFA_mse<-function(L,weight_func,Lag,Gamma,cutoff)
 #' @export
 #'
 
-MDFA_mse_constraint<-function(L,weight_func,Lag,Gamma,cutoff,i1,i2,weight_constraint,shift_constraint)
+MDFA_mse_constraint<-function(L,weight_func,Lag,Gamma,i1,i2,weight_constraint,shift_constraint)
 {
 
+  cutoff<-pi
   lin_eta<-F
   lambda<-0
   eta<-0
@@ -262,9 +262,7 @@ MDFA_reg_constraint<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta,lambda_c
 {
 
   lin_eta<-F
-  weight_constraint<-rep(1/(ncol(weight_func)-1),ncol(weight_func)-1)
   lin_expweight<-F
-  shift_constraint<-rep(0,ncol(weight_func)-1)
   grand_mean<-F
   b0_H0<-NULL
   c_eta<-F

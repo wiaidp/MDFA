@@ -4,8 +4,8 @@
 \alias{MDFA_mse_constraint}
 \title{Simplified call for multivariate MSE estimation with filter constraints: no regularization, no customization}
 \usage{
-MDFA_mse_constraint(L, weight_func, Lag, Gamma, cutoff, i1, i2,
-  weight_constraint, shift_constraint)
+MDFA_mse_constraint(L, weight_func, Lag, Gamma, i1, i2, weight_constraint,
+  shift_constraint)
 }
 \arguments{
 \item{L}{Filter-length}
@@ -15,8 +15,6 @@ MDFA_mse_constraint(L, weight_func, Lag, Gamma, cutoff, i1, i2,
 \item{Lag}{Nowcast (Lag=0), Forecast (Lag<0), Backcast (Lag>0)}
 
 \item{Gamma}{Generic target specification: typically symmetric Lowpass (trend) or Bandpass (cycle) filters. Highpass and anticipative allpass (forecast) can be specified too}
-
-\item{cutoff}{Specifies start-frequency in stopband from which Smoothness is emphasized (corresponds typically to the cutoff of the lowpass target). Is not used if eta=0.}
 
 \item{i1}{Boolean. If T a first-order filter constraint in frequency zero is obtained: amplitude of real-time filter must match weight_constraint (handles integration order one)}
 
