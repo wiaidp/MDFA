@@ -27,7 +27,7 @@ MDFA_mse<-function(L,weight_func,Lag,Gamma)
   weight_structure<-c(0,0)
   white_noise<-F
   synchronicity<-F
-  lag_mat<-matrix(Lag+rep(0:(L-1),ncol(weight_func)-1),nrow=L)
+  lag_mat<-matrix(rep(0:(L-1),ncol(weight_func)-1),nrow=L)
   troikaner<-F
   i1<-i2<-F
 
@@ -74,7 +74,7 @@ MDFA_mse_constraint<-function(L,weight_func,Lag,Gamma,i1,i2,weight_constraint,sh
   weight_structure<-c(0,0)
   white_noise<-F
   synchronicity<-F
-  lag_mat<-matrix(Lag+rep(0:(L-1),ncol(weight_func)-1),nrow=L)
+  lag_mat<-matrix(rep(0:(L-1),ncol(weight_func)-1),nrow=L)
   troikaner<-F
 
   mdfa_obj<-mdfa_analytic(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_constraint,
@@ -118,7 +118,7 @@ MDFA_cust<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta)
   weight_structure<-c(0,0)
   white_noise<-F
   synchronicity<-F
-  lag_mat<-matrix(Lag+rep(0:(L-1),ncol(weight_func)-1),nrow=L)
+  lag_mat<-matrix(rep(0:(L-1),ncol(weight_func)-1),nrow=L)
   troikaner<-F
   i1<-i2<-F
 
@@ -167,7 +167,7 @@ MDFA_cust_constraint<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta,i1,i2,w
   weight_structure<-c(0,0)
   white_noise<-F
   synchronicity<-F
-  lag_mat<-matrix(Lag+rep(0:(L-1),ncol(weight_func)-1),nrow=L)
+  lag_mat<-matrix(rep(0:(L-1),ncol(weight_func)-1),nrow=L)
   troikaner<-F
 
   mdfa_obj<-mdfa_analytic(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_constraint,
@@ -217,7 +217,7 @@ MDFA_reg<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta,lambda_cross,lambda
   weight_structure<-c(0,0)
   white_noise<-F
   synchronicity<-F
-  lag_mat<-matrix(Lag+rep(0:(L-1),ncol(weight_func)-1),nrow=L)
+  lag_mat<-matrix(rep(0:(L-1),ncol(weight_func)-1),nrow=L)
   troikaner<-F
   i1<-i2<-F
 
@@ -270,7 +270,7 @@ MDFA_reg_constraint<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta,lambda_c
   weight_structure<-c(0,0)
   white_noise<-F
   synchronicity<-F
-  lag_mat<-matrix(Lag+rep(0:(L-1),ncol(weight_func)-1),nrow=L)
+  lag_mat<-matrix(rep(0:(L-1),ncol(weight_func)-1),nrow=L)
   troikaner<-F
 
   mdfa_obj<-mdfa_analytic(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_constraint,
