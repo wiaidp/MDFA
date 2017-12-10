@@ -595,7 +595,7 @@ spec_mat_comp<-function(weight_func,L,Lag,c_eta,lag_mat)
 # We feed the daily structure of the mixed_frequency data lag_mat
     exp_mat<-matrix(nrow=L,ncol=ncol(weight_h_exp))
     for (h in 1:ncol(exp_mat))
-      exp_mat[,h]<-exp(1.i*omegak*(lag_mat[,h]-Lag))
+      exp_mat[,h]<-exp(1.i*omegak*(lag_mat[,h+1]-Lag))
 # Inclusion of the time-varying lag-structure of the mixed-frequency data
     spec_mat<-cbind(spec_mat,as.vector(t(weight_h_exp[j+1,]*t(exp_mat))))
   }
