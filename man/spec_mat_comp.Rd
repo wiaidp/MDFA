@@ -23,4 +23,3 @@ spec_mat Spectral matrix set-up for closed-form solution of optimization problem
 \description{
 This function sets-up the spectral matrix for closed-form solution of the optimization problem in the multivariate case: it relies on the multivariate DFT; it organizes lead/lags in the case of mixed-frequency data.
 }
-
