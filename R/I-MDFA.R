@@ -847,8 +847,8 @@ Q_reg_func<-function(L,weight_h_exp,lambda_decay,lambda_smooth,lambda_cross,Lag,
   {
     # For symmetric filters or any historical filter with Lag>0 the decay must be symmetric about b_max(0,Lag)
     # lambda_decay is a 2-dim vector: the first component controls for the exponential decay and the second accounts for the strength of the regularization
-    # The maximal weight is limited to 1e+10
-    Q_decay[i,i]<-(1+lambda_decay[1])^(2*abs(i-1-max(0,Lag)))
+    # The maximal weight is limited to 1e+4
+    Q_decay[i,i]<-min((1+lambda_decay[1])^(2*abs(i-1-max(0,Lag))),1e+4)
     # Original idea: with mixed-frequency data the decay should account for the effective lag (of the lower frequency data) as measured on the high-frequency scale: this is not a clever idea...
     #   Q_decay[i,i]<-min((1+lambda_decay[1])^(2*abs(lag_mat[i,1]-max(0,Lag))),1e+4)
 
