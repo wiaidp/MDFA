@@ -6,9 +6,9 @@
 #' @return weight_func (Multivariate) Discrete Fourier Transform
 #' @export
 #'
-#'
 
 spec_comp <- function(insamp, x, d) {
+  # non-stationarity
   if(d == 1) {
     weight_func <- periodogram_bp(diff(x[1 : insamp, 1]), 1,
                                   insamp - 1)$fourtrans

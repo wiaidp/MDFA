@@ -27,4 +27,3 @@ mdfa_obj MDFA object
 \description{
 Simplified call for multivariate customization: no regularization, no constraints
 }
-

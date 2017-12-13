@@ -570,7 +570,9 @@ mdfa_analytic<-function(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_c
 #' @param c_eta Boolean weight of frequency zero (default is F)
 #' @param lag_mat Matrix for implementing effective lags in a mixed-frequency setting
 #' @return spec_mat Spectral matrix set-up for closed-form solution of optimization problem
+#' @export
 #'
+
 spec_mat_comp<-function(weight_func,L,Lag,c_eta,lag_mat)
 {
   K<-length(weight_func[,1])-1
@@ -845,10 +847,10 @@ Q_reg_func<-function(L,weight_h_exp,lambda_decay,lambda_smooth,lambda_cross,Lag,
   {
     # For symmetric filters or any historical filter with Lag>0 the decay must be symmetric about b_max(0,Lag)
     # lambda_decay is a 2-dim vector: the first component controls for the exponential decay and the second accounts for the strength of the regularization
-    # with mixed-frequency data the decay should account for the effective lag (of the lower frequency data) as measured on the high-frequency scale
     # The maximal weight is limited to 1e+10
-    #    Q_decay[i,i]<-(1+lambda_decay[1])^(2*abs(i-1-max(0,Lag)))
-    Q_decay[i,i]<-min((1+lambda_decay[1])^(2*abs(lag_mat[i,1]-max(0,Lag))),1e+4)
+    Q_decay[i,i]<-(1+lambda_decay[1])^(2*abs(i-1-max(0,Lag)))
+    # Original idea: with mixed-frequency data the decay should account for the effective lag (of the lower frequency data) as measured on the high-frequency scale: this is not a clever idea...
+    #   Q_decay[i,i]<-min((1+lambda_decay[1])^(2*abs(lag_mat[i,1]-max(0,Lag))),1e+4)
 
     if (L>4)
     {

@@ -21,4 +21,3 @@ mdfa_obj MDFA object
 \description{
 Simplified call for multivariate MSE estimation: no constraints, no regularization, no customization
 }
-

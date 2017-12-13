@@ -30,4 +30,3 @@ mdfa_obj MDFA object
 \description{
 Simplified call for multivariate MSE estimation with filter constraints: no regularization, no customization
 }
-
