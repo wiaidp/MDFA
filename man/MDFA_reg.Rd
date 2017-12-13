@@ -34,4 +34,3 @@ mdfa_obj MDFA object
 \description{
 Simplified call for multivariate MSE and customization with regularization but no constraints
 }
-
