@@ -27,7 +27,7 @@ MDFA_mse<-function(L,weight_func,Lag,Gamma)
   weight_structure<-c(0,0)
   white_noise<-F
   synchronicity<-F
-  lag_mat<-matrix(rep(0:(L-1),ncol(weight_func)-1),nrow=L)
+  lag_mat<-matrix(rep(0:(L-1),ncol(weight_func)),nrow=L)
   troikaner<-F
   i1<-i2<-F
 
@@ -74,7 +74,7 @@ MDFA_mse_constraint<-function(L,weight_func,Lag,Gamma,i1,i2,weight_constraint,sh
   weight_structure<-c(0,0)
   white_noise<-F
   synchronicity<-F
-  lag_mat<-matrix(rep(0:(L-1),ncol(weight_func)-1),nrow=L)
+  lag_mat<-matrix(rep(0:(L-1),ncol(weight_func)),nrow=L)
   troikaner<-F
 
   mdfa_obj<-mdfa_analytic(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_constraint,
@@ -118,7 +118,7 @@ MDFA_cust<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta)
   weight_structure<-c(0,0)
   white_noise<-F
   synchronicity<-F
-  lag_mat<-matrix(rep(0:(L-1),ncol(weight_func)-1),nrow=L)
+  lag_mat<-matrix(rep(0:(L-1),ncol(weight_func)),nrow=L)
   troikaner<-F
   i1<-i2<-F
 
@@ -167,7 +167,7 @@ MDFA_cust_constraint<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta,i1,i2,w
   weight_structure<-c(0,0)
   white_noise<-F
   synchronicity<-F
-  lag_mat<-matrix(rep(0:(L-1),ncol(weight_func)-1),nrow=L)
+  lag_mat<-matrix(rep(0:(L-1),ncol(weight_func)),nrow=L)
   troikaner<-F
 
   mdfa_obj<-mdfa_analytic(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_constraint,
@@ -217,7 +217,7 @@ MDFA_reg<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta,lambda_cross,lambda
   weight_structure<-c(0,0)
   white_noise<-F
   synchronicity<-F
-  lag_mat<-matrix(rep(0:(L-1),ncol(weight_func)-1),nrow=L)
+  lag_mat<-matrix(rep(0:(L-1),ncol(weight_func)),nrow=L)
   troikaner<-F
   i1<-i2<-F
 
@@ -270,7 +270,7 @@ MDFA_reg_constraint<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta,lambda_c
   weight_structure<-c(0,0)
   white_noise<-F
   synchronicity<-F
-  lag_mat<-matrix(rep(0:(L-1),ncol(weight_func)-1),nrow=L)
+  lag_mat<-matrix(rep(0:(L-1),ncol(weight_func)),nrow=L)
   troikaner<-F
 
   mdfa_obj<-mdfa_analytic(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_constraint,
@@ -850,7 +850,7 @@ Q_reg_func<-function(L,weight_h_exp,lambda_decay,lambda_smooth,lambda_cross,Lag,
     # The maximal weight is limited to 1e+4
     Q_decay[i,i]<-min((1+lambda_decay[1])^(2*abs(i-1-max(0,Lag))),1e+4)
     # Original idea: with mixed-frequency data the decay should account for the effective lag (of the lower frequency data) as measured on the high-frequency scale: this is not a clever idea...
-    #   Q_decay[i,i]<-min((1+lambda_decay[1])^(2*abs(lag_mat[i,1]-max(0,Lag))),1e+4)
+    #   Q_decay[i,i]<-min((1+lambda_decay[1])^(2*abs(lag_mat[i,1+1]-max(0,Lag))),1e+4)
 
     if (L>4)
     {
@@ -893,7 +893,9 @@ Q_reg_func<-function(L,weight_h_exp,lambda_decay,lambda_smooth,lambda_cross,Lag,
       if (L>4)
         Q_smooth[j*L+1:L,j*L+1:L]<-Q_smooth[1:L,1:L]
       for (i in 1:L)
-        Q_decay[j*L+i,j*L+i]<-min((1+lambda_decay[1])^(2*abs(lag_mat[i,1+j]-max(0,Lag))),1e+4)
+        Q_decay[j*L+i,j*L+i]<-min((1+lambda_decay[1])^(2*abs(i-1-max(0,Lag))),1e+4)
+# Original idea: with mixed-frequency data the decay should account for the effective lag (of the lower frequency data) as measured on the high-frequency scale: this is not a clever idea...
+#      Q_decay[j*L+i,j*L+i]<-min((1+lambda_decay[1])^(2*abs(lag_mat[i,1+j+1]-max(0,Lag))),1e+4)
 
     }
     Q_centraldev_original<-diag(rep(1,L*length(weight_h_exp[1,])))
