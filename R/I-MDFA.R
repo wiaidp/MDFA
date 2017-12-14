@@ -8,6 +8,7 @@
 #' @export
 #'
 
+
 MDFA_mse<-function(L,weight_func,Lag,Gamma)
 {
 
