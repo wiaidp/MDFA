@@ -694,6 +694,7 @@ mat_func<-function(i1,i2,L,weight_h_exp,lambda_decay,lambda_cross,lambda_smooth,
   }
 
 
+
 # Normalize regularization terms (which are multiplied by des_mat) in order to disentangle i1/i2 effects
   reg_mat<-(des_mat)%*%reg_t%*%t(des_mat)#sum(diag(reg_mat))
   if (is.null(b0_H0))
@@ -701,7 +702,15 @@ mat_func<-function(i1,i2,L,weight_h_exp,lambda_decay,lambda_cross,lambda_smooth,
   b0_H0<-as.vector(b0_H0)
   if (lambda_smooth+lambda_decay[2]+lambda_cross>0)
   {
-    disentangle_des_mat_effect<-sum(diag(reg_t))/sum(diag(reg_mat))#sum(apply(reg_mat,1,sum))/sum(apply(reg_t,1,sum))
+    disentangle_des_mat_effect<-sum(diag(reg_t))/sum(diag(reg_mat))
+    if (abs(sum(diag(reg_mat)))>0)
+    {
+      disentangle_des_mat_effect<-sum(diag(reg_t))/sum(diag(reg_mat))
+    } else
+    {
+      disentangle_des_mat_effect<-1
+    }
+
     reg_mat<-reg_mat*disentangle_des_mat_effect
     reg_xtxy<-des_mat%*%reg_t%*%(w_eight-b0_H0)*(disentangle_des_mat_effect)#+t(w_eight)%*%reg_t%*%t(des_mat)
   } else
