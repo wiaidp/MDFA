@@ -48,4 +48,3 @@ w_eight Constants from filter constraints
 \description{
 This function sets-up the design matrix of the generic optimization problem: it combines data, regularization features and filter constraints
 }
-
