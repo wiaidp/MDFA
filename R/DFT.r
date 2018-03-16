@@ -44,7 +44,7 @@ spec_comp <- function(insamp, x, d) {
 spec_comp_parallel <- function(insamp, x, d) {
   #setup parallel backend to use many processors
   cores=detectCores()
-  cl <- makeCluster(cores[1]-1) #not to overload your computer
+  cl <- makeCluster(4) #not to overload your computer
   registerDoParallel(cl)
   # non-stationarity
   if(d == 1) {
