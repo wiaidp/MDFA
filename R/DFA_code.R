@@ -23,7 +23,10 @@ per<-function(x,plot_T)
   }
 # Frequency zero receives weight 1/sqrt(2)
 #   The periodogram in frequency zero appears once only whereas all other frequencies are doubled
-  DFT[1]<-DFT[1]/sqrt(2)
+
+# This is omitted now in order to comply with MDFA
+#   We now change the periodogram in the dfa estimation routines
+#  DFT[1]<-DFT[1]/sqrt(2)
 # Weighths wk: if length of data sample is even then DFT in frequency pi is scaled by 1/sqrt(2) (Periodogram in pi is weighted by 1/2)
   if (abs(as.integer(len/2)-len/2)<0.1)
     DFT[k+1]<-DFT[k+1]/sqrt(2)
@@ -66,7 +69,8 @@ per<-function(x,plot_T)
 #'
 dfa_ms<-function(L,periodogram,Lag,Gamma)
 {
-
+# Frequency 0 appears once only whereas all other frequencies are doubles: therefore we halve periodogram in frequency zero
+  periodogram[1]<-periodogram[1]/2
   K<-length(periodogram)-1
   X<-exp(-1.i*Lag*pi*(0:(K))/(K))*rep(1,K+1)*sqrt(periodogram)
   X_y<-exp(-1.i*Lag*pi*(0:(K))/(K))*rep(1,K+1)
@@ -113,7 +117,9 @@ dfa_ms<-function(L,periodogram,Lag,Gamma)
 #'
 dfa_analytic<-function(L,lambda,periodogram,Lag,Gamma,eta,cutoff,i1,i2)
 {
-# Impose meaningful parameter restrictions
+# Frequency 0 appears once only whereas all other frequencies are doubles: therefore we halve periodogram in frequency zero
+  periodogram[1]<-periodogram[1]/2
+  # Impose meaningful parameter restrictions
   lambda<-abs(lambda)
   eta<-abs(eta)
   K<-length(periodogram)-1
