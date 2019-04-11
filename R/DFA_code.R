@@ -18,7 +18,7 @@ per<-function(x,plot_T)
 
   for (k in 0:(len/2))
   {
-    cexp <- exp(-1.i*(1:len)*2*pi*k/len)
+    cexp <- exp(1.i*(1:len)*2*pi*k/len)
     DFT[k+1]<-sum(cexp*x*sqrt(1/(2*pi*len)))
   }
 # Frequency zero receives weight 1/sqrt(2)

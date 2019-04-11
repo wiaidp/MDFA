@@ -23,4 +23,3 @@ trffkt Complex transfer function of optimal (univariate MSE) filter
 \description{
 This function computes MSE (mean-square) DFA-solutions: no customization, univariate problems only, no regularization, no constraints
 }
-

@@ -36,4 +36,3 @@ Q_cross Cross-sectional term (matrix)
 \description{
 This function sets-up the regularization matrices
 }
-

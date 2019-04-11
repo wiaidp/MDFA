@@ -27,4 +27,3 @@ des_mat Data-based design matrix
 \description{
 This function sets-up the data-based part of the design matrix, accounting for i1/i2 constraints (this is the effective design-matrix in the absence of regularization). It is originally written in grand-mean parametrization (which makes it more tedious).  Singularities in the case i1=F, i2=T are avoided by `displacing' the constraints by a small number.
 }
-

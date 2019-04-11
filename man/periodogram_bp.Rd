@@ -21,4 +21,3 @@ fourtrans DFT
 \description{
 Periodogram and DFT function: can handle more general cases than function per()
 }
-

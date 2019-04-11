@@ -78,4 +78,3 @@ freezed_degrees_new The complementary of degrees_freedom
 \description{
 Main estimation routine: Sets-up the generic optimization criteria proposed in MDFA-Legacy project (book)
 }
-

@@ -27,4 +27,3 @@ w_eight Vector of filter weights entering closed-form solution
 \description{
 This function specifies the constant in case of filter constraints with/without regularization
 }
-

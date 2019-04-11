@@ -29,4 +29,3 @@ MS_error Sample estimate of MSE: consistent estimate in the cases lambda>0 and/o
 \description{
 This function decomposes the MSE-criterion into Accuracy, Smoothness and Timeliness components
 }
-

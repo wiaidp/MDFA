@@ -23,4 +23,3 @@ spec_mat_structure Differenced spectral matrix structure
 \description{
 This function allows for additional structure in the optimization criteria (features are not implemented yet)
 }
-

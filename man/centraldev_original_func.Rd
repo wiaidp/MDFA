@@ -17,4 +17,3 @@ Q_centraldev_original Transformation matrix
 \description{
 This function transforms grand-mean parametrization back to original coefficients
 }
-

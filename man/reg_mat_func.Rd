@@ -42,4 +42,3 @@ lambda_cross Re-parameterized cross-sectional-weight
 \description{
 This function calls the regularization settings (bilinear forms) for cross-correlation, smoothness and decay patterns
 }
-

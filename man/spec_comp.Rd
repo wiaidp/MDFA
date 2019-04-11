@@ -19,4 +19,3 @@ weight_func (Multivariate) Discrete Fourier Transform
 \description{
 Generic function for computing the multivariate DFT: assigns a correct weight to frequency zero (1/sqrt(2)).
 }
-

@@ -19,4 +19,3 @@ weight_func Parameterized DFT
 \description{
 This function allows for particular parametrizations of DFT (not implemented yet)
 }
-
