@@ -199,11 +199,12 @@ MDFA_cust_constraint<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta,i1,i2,w
 #' @param lambda_cross Regularization: cross-sectional term
 #' @param lambda_decay Regularization: decay term
 #' @param lambda_smooth Regularization: smoothness term
+#' @param troikaner Boolean: if T then additional statistics such as ATS and degrees of freedom are computed (numerically involving)
 #' @return mdfa_obj MDFA object
 #' @export
 #'
 
-MDFA_reg<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta,lambda_cross,lambda_decay,lambda_smooth)
+MDFA_reg<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta,lambda_cross,lambda_decay,lambda_smooth,troikaner=F)
 {
 
 
@@ -219,7 +220,6 @@ MDFA_reg<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta,lambda_cross,lambda
   white_noise<-F
   synchronicity<-F
   lag_mat<-matrix(rep(0:(L-1),ncol(weight_func)),nrow=L)
-  troikaner<-F
   i1<-i2<-F
 
 
@@ -255,11 +255,12 @@ MDFA_reg<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta,lambda_cross,lambda
 #' @param lambda_cross Regularization: cross-sectional term
 #' @param lambda_decay Regularization: decay term
 #' @param lambda_smooth Regularization: smoothness term
+#' @param troikaner Boolean: if T then additional statistics such as ATS and degrees of freedom are computed (numerically involving)
 #' @return mdfa_obj MDFA object
 #' @export
 #'
 
-MDFA_reg_constraint<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta,lambda_cross,lambda_decay,lambda_smooth,i1,i2,weight_constraint,shift_constraint)
+MDFA_reg_constraint<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta,lambda_cross,lambda_decay,lambda_smooth,i1,i2,weight_constraint,shift_constraint,troikaner=F)
 {
 
   lin_eta<-F
@@ -272,7 +273,7 @@ MDFA_reg_constraint<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta,lambda_c
   white_noise<-F
   synchronicity<-F
   lag_mat<-matrix(rep(0:(L-1),ncol(weight_func)),nrow=L)
-  troikaner<-F
+
 
   mdfa_obj<-mdfa_analytic(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_constraint,
                           lambda_cross,lambda_decay,lambda_smooth,lin_eta,shift_constraint,grand_mean,
