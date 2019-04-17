@@ -239,6 +239,7 @@ MDFA_reg<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta,lambda_cross,lambda
 
 
 
+
 #' Simplified call for multivariate MSE/customization with regularization and constraints
 #'
 #' @param L Filter-length
