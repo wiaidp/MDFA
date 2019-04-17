@@ -323,6 +323,7 @@ MDFA_reg_constraint<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta,lambda_c
 #' @return Timeliness Timeliness term in decomposition of MSE
 #' @return MS_error Sample estimate of MSE: consistent estimate in the cases lambda>0 and/or eta>0
 #' @return freezed_degrees_new The complementary of degrees_freedom
+#' @return tic Troikaner information criterion: based on sub-dimension of shrinkage space
 #' @export
 #'
 
@@ -547,9 +548,9 @@ mdfa_analytic<-function(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_c
     # The following is a real number but due to numerical rounding errors we prefer to take the real part of the result
     freezed_degrees_new<-Re(K+1-sum(eigen(res_M)$values))
     # Troikaner
-    aic<-ifelse(degrees_freedom<K+1&degrees_freedom>1,log(rever)+2*(K-degrees_freedom+1)/(degrees_freedom-2),NA)
-
-    return(list(b=b,trffkt=trffkt,rever=rever,degrees_freedom=degrees_freedom,aic=aic,freezed_degrees=freezed_degrees,Accuracy=Accuracy,Smoothness=Smoothness,Timeliness=Timeliness,MS_error=MS_error,freezed_degrees_new=freezed_degrees_new))
+    tic<-ifelse(degrees_freedom<2*K+1&degrees_freedom>1,log(rever)+2*(K-degrees_freedom+1)/(degrees_freedom-2),NA)
+    tic<-log(rever)+2*freezed_degrees_new/(2*K)
+    return(list(b=b,trffkt=trffkt,rever=rever,degrees_freedom=degrees_freedom,tic=tic,freezed_degrees=freezed_degrees,Accuracy=Accuracy,Smoothness=Smoothness,Timeliness=Timeliness,MS_error=MS_error,freezed_degrees_new=freezed_degrees_new))
   } else
   {
 # Simplified (shorter) return
