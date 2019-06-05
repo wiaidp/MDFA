@@ -481,6 +481,7 @@ mdfa_analytic<-function(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_c
 
 
 
+
   weight_cm<-matrix(w_eight,ncol=(length(weight_h_exp[1,])))
   # Add level and/or time-shift constraints (if i1<-F and i2<-F then this matrix is zero)
   b<-b+weight_cm
