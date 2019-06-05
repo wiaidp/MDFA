@@ -497,7 +497,7 @@ mdfa_analytic<-function(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_c
   {
     for (k in 0:(K))
     {
-      trffkt[k+1,j]<-(b[,j]%*%exp(1.i*k*(0:(L-1))*pi/(K)))
+      trffkt[k+1,j]<-(b[,j]%*%exp(1.i*k*lag_mat[,j+1]*pi/(K)))
     }
   }
 
