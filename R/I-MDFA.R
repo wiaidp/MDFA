@@ -22,12 +22,12 @@ MDFA_mse<-function(L,weight_func,Lag,Gamma)
   lin_expweight<-F
   shift_constraint<-rep(0,ncol(weight_func)-1)
   grand_mean<-F
-  b0_H0<-NULL
   c_eta<-F
   weights_only<-F
   weight_structure<-c(0,0)
   white_noise<-F
   synchronicity<-F
+  b0_H0<-NULL
   lag_mat<-matrix(rep(0:(L-1),ncol(weight_func)),nrow=L)
   troikaner<-F
   i1<-i2<-F
@@ -69,12 +69,12 @@ MDFA_mse_constraint<-function(L,weight_func,Lag,Gamma,i1,i2,weight_constraint,sh
   lambda_decay<-c(0,0)
   lin_expweight<-F
   grand_mean<-F
-  b0_H0<-NULL
   c_eta<-F
   weights_only<-F
   weight_structure<-c(0,0)
   white_noise<-F
   synchronicity<-F
+  b0_H0<-NULL
   lag_mat<-matrix(rep(0:(L-1),ncol(weight_func)),nrow=L)
   troikaner<-F
 
@@ -113,12 +113,12 @@ MDFA_cust<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta)
   lin_expweight<-F
   shift_constraint<-rep(0,ncol(weight_func)-1)
   grand_mean<-F
-  b0_H0<-NULL
   c_eta<-F
   weights_only<-F
   weight_structure<-c(0,0)
   white_noise<-F
   synchronicity<-F
+  b0_H0<-NULL
   lag_mat<-matrix(rep(0:(L-1),ncol(weight_func)),nrow=L)
   troikaner<-F
   i1<-i2<-F
@@ -162,12 +162,12 @@ MDFA_cust_constraint<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta,i1,i2,w
   lambda_decay<-c(0,0)
   lin_expweight<-F
   grand_mean<-F
-  b0_H0<-NULL
   c_eta<-F
   weights_only<-F
   weight_structure<-c(0,0)
   white_noise<-F
   synchronicity<-F
+  b0_H0<-NULL
   lag_mat<-matrix(rep(0:(L-1),ncol(weight_func)),nrow=L)
   troikaner<-F
 
@@ -200,11 +200,12 @@ MDFA_cust_constraint<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta,i1,i2,w
 #' @param lambda_decay Regularization: decay term
 #' @param lambda_smooth Regularization: smoothness term
 #' @param troikaner Boolean: if T then additional statistics such as ATS and degrees of freedom are computed (numerically involving)
+#' @param b0_H0: Null-hypothesis towards which the parameter vector/matrix will be shrunken when imposing regularization
 #' @return mdfa_obj MDFA object
 #' @export
 #'
 
-MDFA_reg<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta,lambda_cross,lambda_decay,lambda_smooth,troikaner=F)
+MDFA_reg<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta,lambda_cross,lambda_decay,lambda_smooth,troikaner=F,b0_H0=NULL)
 {
 
 
@@ -213,7 +214,6 @@ MDFA_reg<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta,lambda_cross,lambda
   lin_expweight<-F
   shift_constraint<-rep(0,ncol(weight_func)-1)
   grand_mean<-F
-  b0_H0<-NULL
   c_eta<-F
   weights_only<-F
   weight_structure<-c(0,0)
@@ -257,17 +257,17 @@ MDFA_reg<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta,lambda_cross,lambda
 #' @param lambda_decay Regularization: decay term
 #' @param lambda_smooth Regularization: smoothness term
 #' @param troikaner Boolean: if T then additional statistics such as ATS and degrees of freedom are computed (numerically involving)
+#' @param b0_H0: Null-hypothesis towards which the parameter vector/matrix will be shrunken when imposing regularization
 #' @return mdfa_obj MDFA object
 #' @export
 #'
 
-MDFA_reg_constraint<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta,lambda_cross,lambda_decay,lambda_smooth,i1,i2,weight_constraint,shift_constraint,troikaner=F)
+MDFA_reg_constraint<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta,lambda_cross,lambda_decay,lambda_smooth,i1,i2,weight_constraint,shift_constraint,troikaner=F,b0_H0=NULL)
 {
 
   lin_eta<-F
   lin_expweight<-F
   grand_mean<-F
-  b0_H0<-NULL
   c_eta<-F
   weights_only<-F
   weight_structure<-c(0,0)
