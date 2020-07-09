@@ -1,3 +1,6 @@
+library(foreach)
+library(doParallel)
+
 #' Simplified call for multivariate MSE estimation: no constraints, no regularization, no customization
 #'
 #' @param L Filter-length
@@ -360,10 +363,10 @@ mdfa_analytic<-function(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_c
     print(paste("length of b0_H0 vector is ",length(b0_H0),": it should be ",L*(dim(weight_func)[2]-1)," instead",sep=""))
 # The function spect_mat_comp rotates all DFTs such that first column is real!#Lag<-0
 
+
   spec_mat<-spec_mat_comp(weight_func,L,Lag,c_eta,lag_mat)$spec_mat
   #spec_mat[,2]  spec_math-spec_mat
   structure_func_obj<-structure_func(weight_func,spec_mat)
-
 
   Gamma_structure<-structure_func_obj$Gamma_structure
   spec_mat_structure<-structure_func_obj$spec_mat_structure
@@ -415,6 +418,7 @@ mdfa_analytic<-function(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_c
 
   # DFT's explaining variables: target variable can be an explaining variable too
   weight_h_exp<-as.matrix(weight_h[,2:(dim(weight_h)[2])])
+
 
   # The spectral matrix is inflated in stopband: effect of eta
   spec_mat<-t(t(spec_mat)*eta_vec) #dim(spec_mat)  as.matrix(Im(spec_mat[150,]))
@@ -501,7 +505,7 @@ mdfa_analytic<-function(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_c
       trffkt[k+1,j]<-(b[,j]%*%exp(1.i*k*lag_mat[,j+1]*pi/(K)))
     }
   }
-
+ 
 
   trt<-apply(((trffkt)*exp(1.i*(0-Lag)*pi*(0:(K))/K))*weight_h_exp,1,sum)
   # DFA criterion which accounts for customization but not for regularization term
@@ -525,6 +529,7 @@ mdfa_analytic<-function(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_c
 # The following computations are time-consuming if K is `large'
 # By default they are skipped i.e. troikaner=F
 # Additional output: degrees of freedom, AIC
+  
   if (troikaner)
   {
     # The following derivations of the DFA-criterion are equivalent
@@ -583,6 +588,9 @@ mdfa_analytic<-function(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_c
 
 spec_mat_comp<-function(weight_func,L,Lag,c_eta,lag_mat)
 {
+  ## Andrew ##
+  return (spec_mat_comp_parallel(weight_func,L,Lag,c_eta,lag_mat))
+  
   K<-length(weight_func[,1])-1
   weight_h<-weight_func
   # Frequency zero receives half weight
@@ -597,7 +605,7 @@ spec_mat_comp<-function(weight_func,L,Lag,c_eta,lag_mat)
   weight_target<-weight_target*exp(-1.i*Arg(weight_target))
   # DFT's explaining variables (target variable can be an explaining variable too)
   weight_h_exp<-as.matrix(weight_h[,2:(dim(weight_h)[2])])
-  spec_mat<-as.vector(t(as.matrix(weight_h_exp[1,])%*%t(as.matrix(rep(1,L)))))
+ spec_mat<-as.vector(t(as.matrix(weight_h_exp[1,])%*%t(as.matrix(rep(1,L)))))
 
   for (j in 1:(K))#j<-1  h<-2  lag_mat<-matrix(rep(0:1,3),ncol=3)   Lag<-2
   {
@@ -609,12 +617,53 @@ spec_mat_comp<-function(weight_func,L,Lag,c_eta,lag_mat)
 # Inclusion of the time-varying lag-structure of the mixed-frequency data
     spec_mat<-cbind(spec_mat,as.vector(t(weight_h_exp[j+1,]*t(exp_mat))))
   }
+
   dim(spec_mat)
+
   return(list(spec_mat=spec_mat))#as.matrix(Re(spec_mat[1,]))
 }
 
+## Andrew ##
+spec_mat_comp_parallel<-function(weight_func,L,Lag,c_eta,lag_mat)
+{
+  
+  K<-length(weight_func[,1])-1
+  weight_h<-weight_func
+  # Frequency zero receives half weight
+  # Chris mod: avoid halving
+  # MDFA-Legacy: the DFT in frequency zero is weighted by 1/sqrt(2) (the weight of frequency zero is 0.5 in mean-square)
+  if (!c_eta)
+    weight_h[1,]<-weight_h[1,]/sqrt(2)
+  # Extract DFT target variable (first column)
+  weight_target<-weight_h[,1]
+  # Rotate all DFT's such that weight_target is real (rotation does not alter mean-square error)
+  weight_h<-weight_h*exp(-1.i*Arg(weight_target))#Im(exp(-1.i*Arg(weight_target)))
+  weight_target<-weight_target*exp(-1.i*Arg(weight_target))
+  # DFT's explaining variables (target variable can be an explaining variable too)
+  weight_h_exp<-as.matrix(weight_h[,2:(dim(weight_h)[2])])
+ 
 
+  #setup parallel backend to use many processors
+  cl <- makeCluster(4) #not to overload your computer
+  registerDoParallel(cl)
+  # start.time <-Sys.time()
+  spec_mat <- foreach(j = 1:(K), .combine='cbind') %dopar% {
+    omegak<-j*pi/K
+    # We feed the daily structure of the mixed_frequency data lag_mat
+    exp_mat<-matrix(nrow=L,ncol=ncol(weight_h_exp))
+    for (h in 1:ncol(exp_mat))
+      exp_mat[,h]<-exp(1.i*omegak*(lag_mat[,h+1]-Lag))
+    
+    as.vector(t(weight_h_exp[j+1,]*t(exp_mat)))
+  }
+  
+  spec_mat<-cbind(as.vector(t(as.matrix(weight_h_exp[1,])%*%t(as.matrix(rep(1,L))))),spec_mat)
+  
+  #stop cluster
+  stopCluster(cl)
 
+  return(list(spec_mat=spec_mat))#as.matrix(Re(spec_mat[1,]))
+}
 
 
 
