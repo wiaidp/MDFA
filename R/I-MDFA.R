@@ -582,6 +582,7 @@ mdfa_analytic<-function(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_c
 #' @param Lag Nowcast (Lag=0), Forecast (Lag<0), Backcast (Lag>0)
 #' @param c_eta Boolean weight of frequency zero (default is F)
 #' @param lag_mat Matrix for implementing effective lags in a mixed-frequency setting
+#' @param Gamma DFA target. It is used to adjust the phase of the spectrum in case Gamma is not real/positive
 #' @return spec_mat Spectral matrix set-up for closed-form solution of optimization problem
 #' @export
 #'
@@ -600,7 +601,7 @@ spec_mat_comp<-function(weight_func,L,Lag,c_eta,lag_mat,Gamma)
   # Rotate all DFT's such that weight_target is real (rotation does not alter mean-square error)
   # We must also account for phase of Gamma (in case where Gamma is not real)
   weight_h<-weight_h*exp(-1.i*Arg(weight_target))*exp(-1.i*Arg(Gamma))#Im(exp(-1.i*Arg(weight_target)))
-  weight_target<-weight_target*exp(-1.i*Arg(weight_target))*exp(-1.i*Arg(Gamma))
+  weight_target<-weight_target*exp(-1.i*Arg(weight_target))
   # DFT's explaining variables (target variable can be an explaining variable too)
   weight_h_exp<-as.matrix(weight_h[,2:(dim(weight_h)[2])])
 
