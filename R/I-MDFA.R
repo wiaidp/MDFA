@@ -360,7 +360,12 @@ mdfa_analytic<-function(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_c
     print(paste("length of b0_H0 vector is ",length(b0_H0),": it should be ",L*(dim(weight_func)[2]-1)," instead",sep=""))
 # The function spect_mat_comp rotates all DFTs such that first column is real!#Lag<-0
 
-  spec_mat<-spec_mat_comp(weight_func,L,Lag,c_eta,lag_mat)$spec_mat
+  spec_mat<-spec_mat_comp(weight_func,L,Lag,c_eta,lag_mat,Gamma)$spec_mat
+
+# In specmat_comp the phase of Gamma is accounted for (if Gamma is not real positive). Therefore we can
+#   assume Gamma=abs(Gamma), which is required to obtain real filter weights
+  Gamma<-abs(Gamma)
+
   #spec_mat[,2]  spec_math-spec_mat
   structure_func_obj<-structure_func(weight_func,spec_mat)
 
@@ -581,7 +586,7 @@ mdfa_analytic<-function(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_c
 #' @export
 #'
 
-spec_mat_comp<-function(weight_func,L,Lag,c_eta,lag_mat)
+spec_mat_comp<-function(weight_func,L,Lag,c_eta,lag_mat,Gamma)
 {
   K<-length(weight_func[,1])-1
   weight_h<-weight_func
@@ -593,12 +598,15 @@ spec_mat_comp<-function(weight_func,L,Lag,c_eta,lag_mat)
   # Extract DFT target variable (first column)
   weight_target<-weight_h[,1]
   # Rotate all DFT's such that weight_target is real (rotation does not alter mean-square error)
-  weight_h<-weight_h*exp(-1.i*Arg(weight_target))#Im(exp(-1.i*Arg(weight_target)))
-  weight_target<-weight_target*exp(-1.i*Arg(weight_target))
+  # We must also account for phase of Gamma (in case where Gamma is not real)
+  weight_h<-weight_h*exp(-1.i*Arg(weight_target))*exp(-1.i*Arg(Gamma))#Im(exp(-1.i*Arg(weight_target)))
+  weight_target<-weight_target*exp(-1.i*Arg(weight_target))*exp(-1.i*Arg(Gamma))
   # DFT's explaining variables (target variable can be an explaining variable too)
   weight_h_exp<-as.matrix(weight_h[,2:(dim(weight_h)[2])])
-  spec_mat<-as.vector(t(as.matrix(weight_h_exp[1,])%*%t(as.matrix(rep(1,L)))))
 
+# Frequency zero
+  spec_mat<-as.vector(t(as.matrix(weight_h_exp[1,])%*%t(as.matrix(rep(1,L)))))
+# Frequencies>0
   for (j in 1:(K))#j<-1  h<-2  lag_mat<-matrix(rep(0:1,3),ncol=3)   Lag<-2
   {
     omegak<-j*pi/K
