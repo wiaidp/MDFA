@@ -364,7 +364,6 @@ mdfa_analytic<-function(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_c
 
 # In specmat_comp the phase of Gamma is accounted for (if Gamma is not real positive). Therefore we can
 #   assume Gamma=abs(Gamma), which is required to obtain real filter weights
-  Gamma<-abs(Gamma)
 
   #spec_mat[,2]  spec_math-spec_mat
   structure_func_obj<-structure_func(weight_func,spec_mat)
@@ -403,10 +402,13 @@ mdfa_analytic<-function(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_c
   weight_h[1,]<-weight_h[1,]*ifelse(c_eta,1,1/sqrt(2))
   # DFT target variable
   weight_target<-weight_h[,1]
-  # Rotate all DFT's such that weight_target is real (rotation does not alter mean-square error). Note that target of strutural
-  # additional structural elements and of original MDFA are the same i.e. rotation must be the same and weight_target are identical too.
-  weight_h<-weight_h*exp(-1.i*Arg(weight_target))
-  weight_target<-Re(weight_target*exp(-1.i*Arg(weight_target)))
+  # Rotate all DFT's such that weight_target is real (rotation does not alter mean-square error).
+  # If Gamma is not real positive, then we must also rotate by phase of Gamma
+  weight_h<-weight_h*exp(-1.i*Arg(weight_target))*
+  weight_target<-Re(weight_target*exp(-1.i*Arg(weight_target))*exp(-1.i*Arg(Gamma)))
+# Since we rotated by phase of Gamma we can assume (rotated) Gamma to be real positive
+  Gamma<-abs(Gamma)
+
 
   # If structure (forecasting) is imposed then we have to undo the customization weighting due to eta (no emphasis of stopband)
   if (sum(abs(weight_structure))>0)
