@@ -404,8 +404,8 @@ mdfa_analytic<-function(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_c
   weight_target<-weight_h[,1]
   # Rotate all DFT's such that weight_target is real (rotation does not alter mean-square error).
   # If Gamma is not real positive, then we must also rotate by phase of Gamma
-  weight_h<-weight_h*exp(-1.i*Arg(weight_target))*
-  weight_target<-Re(weight_target*exp(-1.i*Arg(weight_target))*exp(-1.i*Arg(Gamma)))
+  weight_h<-weight_h*exp(-1.i*Arg(weight_target))**exp(-1.i*Arg(Gamma))
+  weight_target<-Re(weight_target*exp(-1.i*Arg(weight_target)))
 # Since we rotated by phase of Gamma we can assume (rotated) Gamma to be real positive
   Gamma<-abs(Gamma)
 
