@@ -105,10 +105,10 @@ MDFA_mse_constraint<-function(L,weight_func,Lag,Gamma,i1,i2,weight_constraint,sh
 
 MDFA_cust<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta)
 {
-# Classic smoothness customization: weighting S-term
-  lin_eta<-T
 # Exponent in weight function
   lin_eta<-F
+# smoothness customization: linear weight with slope eta
+  lin_eta<-T
   weight_constraint<-rep(1/(ncol(weight_func)-1),ncol(weight_func)-1)
   lambda_cross<-lambda_smooth<-0
   lambda_decay<-c(0,0)
@@ -159,7 +159,7 @@ MDFA_cust<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta)
 MDFA_cust_constraint<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta,i1,i2,weight_constraint,shift_constraint)
 {
 
-  lin_eta<-F
+  lin_eta<-T
   lambda_cross<-lambda_smooth<-0
   lambda_decay<-c(0,0)
   lin_expweight<-F
@@ -383,7 +383,10 @@ mdfa_analytic<-function(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_c
     # Replicate results in McElroy-Wildi (trilemma paper)
     if (lin_eta)
     {
+# Step function
       eta_vec<-c(rep(1,omega_Gamma),1+rep(eta,K-omega_Gamma+1))
+# Linear with slope eta
+      eta_vec<-c(rep(1,omega_Gamma),1+eta*(1:(K-omega_Gamma+1)))
     } else
     {
       if (c_eta)
