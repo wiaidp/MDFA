@@ -116,7 +116,7 @@ dfa_ms<-function(L,periodogram,Lag,Gamma)
 #' @return trffkt Complex transfer function of optimal (univariate) filter
 #' @export
 #'
-dfa_analytic<-function(L,lambda,periodogram,Lag,Gamma,eta,cutoff,i1,i2)
+dfa_analytic<-function(L,lambda,periodogram,Lag,Gamma,eta,cutoff,i1,i2,lin_eta=F)
 {
 # Frequency 0 appears once only whereas all other frequencies are doubles: therefore we halve periodogram in frequency zero
   periodogram[1]<-periodogram[1]/2
@@ -126,14 +126,33 @@ dfa_analytic<-function(L,lambda,periodogram,Lag,Gamma,eta,cutoff,i1,i2)
   K<-length(periodogram)-1
   # Define the amplitude weighting function weight_h (W(omega_k))
   omega_Gamma<-as.integer(cutoff*K/pi)
+
   if ((K-omega_Gamma+1)>0)
   {
-    weight_h<-periodogram*(c(rep(1,omega_Gamma),(1:(K-omega_Gamma+1))^(eta)))
+    if (lin_eta)
+    {
+      # Linear increasing with slope eta/200: (divide by 200 since otherwise effect very strong)
+      weight_h<-periodogram*c(rep(1,omega_Gamma),1+(eta/200)*(1:(K-omega_Gamma+1)))
+    } else
+    {
+      weight_h<-periodogram*(c(rep(1,omega_Gamma),(1:(K-omega_Gamma+1))^(eta/2)))
+    }
   } else
   {
     weight_h<-periodogram*rep(1,K+1)
   }
-  # First order filter restriction: assigning a `large' weight to frequency zero
+
+
+#  if ((K-omega_Gamma+1)>0)
+#  {
+#    weight_h<-periodogram*(c(rep(1,omega_Gamma),(1:(K-omega_Gamma+1))^(eta)))
+#  } else
+#  {
+#    weight_h<-periodogram*rep(1,K+1)
+#  }
+
+
+# First order filter restriction: assigning a `large' weight to frequency zero
   if (i1)
     weight_h[1]<-max(1.e+10,weight_h[1])
 
