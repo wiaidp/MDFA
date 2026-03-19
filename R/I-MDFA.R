@@ -105,8 +105,8 @@ MDFA_mse_constraint<-function(L,weight_func,Lag,Gamma,i1,i2,weight_constraint,sh
 
 MDFA_cust<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta)
 {
-
-  lin_eta<-F
+# Classic smoothness customization: weighting S-term
+  lin_eta<-T
   weight_constraint<-rep(1/(ncol(weight_func)-1),ncol(weight_func)-1)
   lambda_cross<-lambda_smooth<-0
   lambda_decay<-c(0,0)
