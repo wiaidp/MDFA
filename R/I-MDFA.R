@@ -385,8 +385,8 @@ mdfa_analytic<-function(L,lambda,weight_func,Lag,Gamma,eta,cutoff,i1,i2,weight_c
     {
 # Step function
       eta_vec<-c(rep(1,omega_Gamma),1+rep(eta,K-omega_Gamma+1))
-# Linear with slope eta
-      eta_vec<-c(rep(1,omega_Gamma),1+(eta/50)*(1:(K-omega_Gamma+1)))
+# Linear with slope eta: scale dwon the effect such that size of weights match lambda
+      eta_vec<-c(rep(1,omega_Gamma),1+(eta/200)*(1:(K-omega_Gamma+1)))
     } else
     {
       if (c_eta)
