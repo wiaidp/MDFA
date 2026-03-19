@@ -107,7 +107,7 @@ MDFA_cust<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta)
 {
 # Classic smoothness customization: weighting S-term
   lin_eta<-T
-# Exponent
+# Exponent in weight function
   lin_eta<-F
   weight_constraint<-rep(1/(ncol(weight_func)-1),ncol(weight_func)-1)
   lambda_cross<-lambda_smooth<-0
