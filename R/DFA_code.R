@@ -132,7 +132,7 @@ dfa_analytic<-function(L,lambda,periodogram,Lag,Gamma,eta,cutoff,i1,i2,lin_eta=F
     if (lin_eta)
     {
       # Linear increasing with slope eta/200: (divide by 200 since otherwise effect very strong)
-      weight_h<-periodogram*c(rep(1,omega_Gamma),1+(eta/200)*(1:(K-omega_Gamma+1)))
+      weight_h<-periodogram*c(rep(1,omega_Gamma),1+(eta/10)*(1:(K-omega_Gamma+1)))
     } else
     {
       weight_h<-periodogram*(c(rep(1,omega_Gamma),(1:(K-omega_Gamma+1))^(eta/2)))
