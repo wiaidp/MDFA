@@ -13,7 +13,7 @@ MDFA_mse<-function(L,weight_func,Lag,Gamma)
 {
 
   cutoff<-pi
-  lin_eta<-F
+  lin_eta<-T
   lambda<-0
   eta<-0
   weight_constraint<-rep(1/(ncol(weight_func)-1),ncol(weight_func)-1)
@@ -62,7 +62,7 @@ MDFA_mse_constraint<-function(L,weight_func,Lag,Gamma,i1,i2,weight_constraint,sh
 {
 
   cutoff<-pi
-  lin_eta<-F
+  lin_eta<-T
   lambda<-0
   eta<-0
   lambda_cross<-lambda_smooth<-0
@@ -211,7 +211,7 @@ MDFA_reg<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta,lambda_cross,lambda
 {
 
 
-  lin_eta<-F
+  lin_eta<-T
   weight_constraint<-rep(1/(ncol(weight_func)-1),ncol(weight_func)-1)
   lin_expweight<-F
   shift_constraint<-rep(0,ncol(weight_func)-1)
@@ -267,7 +267,7 @@ MDFA_reg<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta,lambda_cross,lambda
 MDFA_reg_constraint<-function(L,weight_func,Lag,Gamma,cutoff,lambda,eta,lambda_cross,lambda_decay,lambda_smooth,i1,i2,weight_constraint,shift_constraint,troikaner=F,b0_H0=NULL)
 {
 
-  lin_eta<-F
+  lin_eta<-T
   lin_expweight<-F
   grand_mean<-F
   c_eta<-F
